@@ -3,6 +3,7 @@ import SparseBrain from './components/SparseBrain';
 import GraphBrain from './components/GraphBrain';
 import HebbianAnimator from './components/HebbianAnimator';
 import PathfinderLive from './components/PathfinderLive';
+import ComparisonTool from './components/ComparisonTool';
 import './App.css';
 
 function App() {
@@ -47,10 +48,8 @@ function App() {
         <button
           className={`nav-btn ${activeModule === 'compare' ? 'active' : ''}`}
           onClick={() => setActiveModule('compare')}
-          disabled
         >
           Comparison Tool
-          <span className="badge">Coming Soon</span>
         </button>
       </nav>
 
@@ -59,7 +58,7 @@ function App() {
         {activeModule === 'graph' && <GraphBrain />}
         {activeModule === 'hebbian' && <HebbianAnimator />}
         {activeModule === 'pathfinder' && <PathfinderLive />}
-        {activeModule === 'compare' && <div className="placeholder">Comparison Tool - Coming Soon</div>}
+        {activeModule === 'compare' && <ComparisonTool />}
       </main>
 
       <footer className="app-footer">
