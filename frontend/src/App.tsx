@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SparseBrain from './components/SparseBrain';
 import GraphBrain from './components/GraphBrain';
+import HebbianAnimator from './components/HebbianAnimator';
 import './App.css';
 
 function App() {
@@ -33,10 +34,8 @@ function App() {
         <button
           className={`nav-btn ${activeModule === 'hebbian' ? 'active' : ''}`}
           onClick={() => setActiveModule('hebbian')}
-          disabled
         >
           Hebbian Animator
-          <span className="badge">Coming Soon</span>
         </button>
         <button
           className={`nav-btn ${activeModule === 'pathfinder' ? 'active' : ''}`}
@@ -59,7 +58,7 @@ function App() {
       <main className="app-main">
         {activeModule === 'sparse' && <SparseBrain />}
         {activeModule === 'graph' && <GraphBrain />}
-        {activeModule === 'hebbian' && <div className="placeholder">Hebbian Animator - Coming Soon</div>}
+        {activeModule === 'hebbian' && <HebbianAnimator />}
         {activeModule === 'pathfinder' && <div className="placeholder">Pathfinder Live - Coming Soon</div>}
         {activeModule === 'compare' && <div className="placeholder">Comparison Tool - Coming Soon</div>}
       </main>
