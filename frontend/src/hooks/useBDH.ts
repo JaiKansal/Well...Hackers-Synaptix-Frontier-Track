@@ -8,6 +8,8 @@ import {
     getTopology,
     measureSparsity,
     getConfig,
+} from '../utils/api';
+import type {
     InferenceRequest,
     InferenceResponse,
     TopologyResponse,
