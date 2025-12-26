@@ -194,13 +194,20 @@ const GraphBrain: React.FC<GraphBrainProps> = ({
 
         const degrees = data.metrics.degree_distribution;
 
+        // Validate degrees is an array
+        if (!degrees || !Array.isArray(degrees) || degrees.length === 0) {
+            console.warn('Invalid degree distribution data');
+            return;
+        }
+
         // Create histogram bins
+        const maxDegree = d3.max(degrees) || 100;
         const bins = d3.bin()
-            .domain([0, d3.max(degrees) || 100])
+            .domain([0, maxDegree])
             .thresholds(20)(degrees);
 
         const x = d3.scaleLinear()
-            .domain([0, d3.max(degrees) || 100])
+            .domain([0, maxDegree])
             .range([margin.left, width - margin.right]);
 
         const y = d3.scaleLinear()
