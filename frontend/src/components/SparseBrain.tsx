@@ -242,20 +242,23 @@ const SparseBrain: React.FC<SparseBrainProps> = ({
                         <h3>Key Insights</h3>
                         <ul>
                             <li>
-                                <strong>Extreme Sparsity:</strong> BDH activates only ~{sparsityPercent}% of neurons per layer,
-                                compared to Transformer's ~95% dense activation.
+                                <strong>Natural Sparsity:</strong> This untrained model shows ~{sparsityPercent}% activation
+                                due to ReLU naturally zeroing negative values. With proper training, BDH achieves
+                                even higher sparsity (~3-5%), compared to Transformer's ~95% dense activation.
                             </li>
                             <li>
-                                <strong>Biological Plausibility:</strong> This sparse activation pattern mirrors how real neurons
-                                in the brain work - only a small subset fires at any given time.
+                                <strong>Biological Plausibility:</strong> Sparse activation patterns mirror how real neurons
+                                in the brain work - only a small subset fires at any given time. Training enhances this
+                                natural sparsity.
                             </li>
                             <li>
-                                <strong>Efficiency:</strong> Fewer active neurons means lower memory usage and faster inference,
-                                while maintaining comparable performance.
+                                <strong>Efficiency Potential:</strong> Even at {sparsityPercent}% sparsity, we see significant
+                                memory savings. A trained model with ~5% sparsity would be ~19x more efficient than
+                                Transformers in terms of active neurons.
                             </li>
                             <li>
                                 <strong>Interpretability:</strong> Sparse activations make it easier to identify which neurons
-                                are responsible for specific computations.
+                                are responsible for specific computations, enabling better model understanding.
                             </li>
                         </ul>
                     </div>
