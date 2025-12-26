@@ -1,0 +1,200 @@
+"""
+BDH Pathfinding Inference
+
+Uses trained BDH model to solve mazes by predicting next cells.
+"""
+
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../reference-bdh'))
+
+import torch
+import numpy as np
+from typing import List, Tuple, Optional
+from bdh import BDH, BDHParameters
+
+
+class BDHPathfindingSolver:
+    """
+    Solver that uses trained BDH model to find paths through mazes.
+    """
+    
+    def __init__(self, checkpoint_path: str, device: str = 'cpu'):
+        """
+        Initialize solver with trained model.
+        
+        Args:
+            checkpoint_path: Path to trained model checkpoint
+            device: Device to run on ('cpu', 'cuda', or 'mps')
+        """
+        self.device = device
+        self.board_size = 10
+        
+        # Create model with same params as training
+        params = BDHParameters(
+            V=100,        # 100 cells (10x10 board)
+            T=100,        # Sequence length
+            H=4,          # Heads
+            N=2048,       # Neurons
+            D=64,         # Latent dimension
+            L=12,         # Layers
+            dropout=0.1,
+            use_rope=True,
+            use_abs_pos=False
+        )
+        
+        self.model = BDH(params)
+        
+        # Load checkpoint
+        if os.path.exists(checkpoint_path):
+            state_dict = torch.load(checkpoint_path, map_location=device)
+            self.model.load_state_dict(state_dict)
+            print(f"✅ Loaded trained model from {checkpoint_path}")
+        else:
+            raise FileNotFoundError(f"Checkpoint not found: {checkpoint_path}")
+        
+        self.model.to(device)
+        self.model.eval()
+    
+    def solve(
+        self,
+        board: np.ndarray,
+        start: Tuple[int, int],
+        end: Tuple[int, int],
+        max_steps: int = 100
+    ) -> Optional[List[Tuple[int, int]]]:
+        """
+        Solve maze using trained BDH model.
+        
+        Args:
+            board: 2D numpy array (10x10) with 0=empty, 1=wall
+            start: Starting position (row, col)
+            end: Ending position (row, col)
+            max_steps: Maximum number of steps to try
+        
+        Returns:
+            List of (row, col) positions forming the path, or None if no solution
+        """
+        current = start
+        path = [start]
+        visited = {start}
+        
+        with torch.no_grad():
+            for step in range(max_steps):
+                # Check if reached end
+                if current == end:
+                    return path
+                
+                # Create board state
+                board_state = self._create_board_state(board, current, start, end)
+                
+                # Convert to tensor
+                board_tensor = torch.from_numpy(board_state).long().unsqueeze(0).to(self.device)
+                
+                # Predict next cell
+                logits = self.model(board_tensor, capture_frames=False)  # [1, T, V=100]
+                last_logits = logits[0, -1, :]  # [100]
+                
+                # Get top predictions (in case top choice is invalid)
+                top_k = 5
+                top_probs, top_indices = torch.topk(last_logits, top_k)
+                
+                # Try top predictions until we find a valid move
+                next_cell = None
+                for idx in top_indices:
+                    cell_idx = idx.item()
+                    row, col = cell_idx // self.board_size, cell_idx % self.board_size
+                    
+                    # Check if valid move
+                    if self._is_valid_move(board, (row, col), visited):
+                        next_cell = (row, col)
+                        break
+                
+                if next_cell is None:
+                    # No valid move found
+                    return None
+                
+                # Move to next cell
+                path.append(next_cell)
+                visited.add(next_cell)
+                current = next_cell
+        
+        # Reached max steps without finding end
+        return None if current != end else path
+    
+    def _create_board_state(
+        self,
+        board: np.ndarray,
+        current: Tuple[int, int],
+        start: Tuple[int, int],
+        end: Tuple[int, int]
+    ) -> np.ndarray:
+        """Create board state with current position marked"""
+        board_state = board.copy()
+        board_state[start] = 2   # Start marker
+        board_state[end] = 3     # End marker
+        board_state[current] = 4  # Current position
+        return board_state.flatten()
+    
+    def _is_valid_move(
+        self,
+        board: np.ndarray,
+        pos: Tuple[int, int],
+        visited: set
+    ) -> bool:
+        """Check if move is valid"""
+        row, col = pos
+        
+        # Check bounds
+        if not (0 <= row < self.board_size and 0 <= col < self.board_size):
+            return False
+        
+        # Check if wall
+        if board[row, col] == 1:
+            return False
+        
+        # Check if already visited
+        if pos in visited:
+            return False
+        
+        return True
+
+
+def test_solver():
+    """Test the solver on a simple maze"""
+    import random
+    
+    # Create a simple test maze
+    board = np.zeros((10, 10), dtype=np.int64)
+    
+    # Add some walls
+    for i in range(10):
+        for j in range(10):
+            if random.random() < 0.2:
+                board[i, j] = 1
+    
+    start = (0, 0)
+    end = (9, 9)
+    board[start] = 0  # Ensure start is not a wall
+    board[end] = 0    # Ensure end is not a wall
+    
+    # Try to solve
+    checkpoint_path = '../../checkpoints/bdh_pathfinding_trained.pth'
+    
+    if not os.path.exists(checkpoint_path):
+        print(f"❌ Checkpoint not found: {checkpoint_path}")
+        print("   Train the model first using Kaggle notebook")
+        return
+    
+    solver = BDHPathfindingSolver(checkpoint_path, device='cpu')
+    path = solver.solve(board, start, end)
+    
+    if path:
+        print(f"✅ Found path with {len(path)} steps!")
+        print(f"   Path: {path[:5]}... → {path[-3:]}")
+    else:
+        print("❌ No path found")
+
+
+if __name__ == "__main__":
+    test_solver()
