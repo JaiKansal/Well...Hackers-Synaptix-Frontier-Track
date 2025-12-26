@@ -124,7 +124,7 @@ class StateExtractor:
             'nodes': nodes,
             'edges': edges,
             'metrics': {
-                'num_nodes': len(nodes),
+                'num_neurons': len(nodes),
                 'num_edges': len(edges),
                 'avg_degree': float(np.mean(degree_list)) if degree_list else 0.0,
                 'max_degree': int(np.max(degree_list)) if degree_list else 0,
@@ -134,7 +134,7 @@ class StateExtractor:
                 'num_communities': len(communities),
                 'hub_threshold': float(hub_threshold),
                 'num_hubs': len(hubs),
-                'hubs': hubs,
+                'hub_indices': hubs,
                 'degree_distribution': degree_list,
             }
         }
