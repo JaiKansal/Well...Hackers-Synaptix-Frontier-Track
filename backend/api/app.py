@@ -139,10 +139,14 @@ def get_device():
 
 
 def load_model():
-    """Load BDH model (cached)"""
+    """Load BDH model (trained checkpoint if available, random otherwise)"""
     if MODEL_CACHE['model'] is None:
-        # Create a default model for testing
-        # In production, load from checkpoint
+        from pathlib import Path
+        
+        # Check for trained checkpoint
+        checkpoint_path = Path(__file__).parent / '../../checkpoints/bdh_trained.pth'
+        
+        # Create model parameters
         params = BDHParameters(
             V=5,
             T=100,
@@ -157,6 +161,43 @@ def load_model():
         
         device = get_device()
         model = BDHInstrumented(params)
+        
+        # Try to load trained checkpoint
+        if checkpoint_path.exists():
+            print("=" * 60)
+            print("🎓 TRAINED MODEL MODE")
+            print("=" * 60)
+            print(f"✓ Loading trained checkpoint from: {checkpoint_path}")
+            try:
+                state_dict = torch.load(checkpoint_path, map_location=device)
+                model.load_state_dict(state_dict)
+                MODEL_CACHE['is_trained'] = True
+                MODEL_CACHE['checkpoint_path'] = str(checkpoint_path)
+                print("✓ Trained model loaded successfully!")
+                print("✓ Expected sparsity: ~5% (learned sparse representations)")
+                print("=" * 60)
+            except Exception as e:
+                print(f"⚠ Error loading checkpoint: {e}")
+                print("⚠ Falling back to random initialization")
+                MODEL_CACHE['is_trained'] = False
+                MODEL_CACHE['checkpoint_path'] = None
+        else:
+            print("=" * 60)
+            print("🎲 DEMO MODE (Random Initialization)")
+            print("=" * 60)
+            print("⚠ No trained checkpoint found")
+            print(f"  Looked in: {checkpoint_path}")
+            print("✓ Using random initialization for demonstration")
+            print("✓ Expected sparsity: ~25% (natural ReLU sparsity)")
+            print("")
+            print("💡 To use trained model:")
+            print("   1. Train on Kaggle (see TRAINING.md)")
+            print("   2. Place checkpoint at: checkpoints/bdh_trained.pth")
+            print("   3. Restart backend")
+            print("=" * 60)
+            MODEL_CACHE['is_trained'] = False
+            MODEL_CACHE['checkpoint_path'] = None
+        
         model.to(device)
         model.eval()
         
@@ -164,7 +205,7 @@ def load_model():
         MODEL_CACHE['device'] = device
         MODEL_CACHE['config'] = params
         
-        print(f"✓ Model loaded on {device}")
+        print(f"✓ Model ready on {device}")
     
     return MODEL_CACHE['model'], MODEL_CACHE['device'], MODEL_CACHE['config']
 
@@ -201,8 +242,28 @@ async def root():
             "topology": "/api/topology",
             "sparsity": "/api/sparsity",
             "pathfind": "/api/pathfind",
+            "model_status": "/api/model-status",
             "health": "/health"
         }
+    }
+
+
+@app.get("/api/model-status")
+async def get_model_status():
+    """Get model training status"""
+    load_model()  # Ensure model is checked
+    
+    is_trained = MODEL_CACHE.get('is_trained', False)
+    checkpoint_path = MODEL_CACHE.get('checkpoint_path')
+    
+    return {
+        "is_trained": is_trained,
+        "device": str(MODEL_CACHE.get('device', 'cpu')),
+        "checkpoint_available": checkpoint_path is not None,
+        "checkpoint_path": checkpoint_path,
+        "expected_sparsity": "5%" if is_trained else "~25%",
+        "note": "Trained model demonstrates learned sparsity" if is_trained 
+                else "Random model for demonstration (train on GPU for 5% sparsity)"
     }
 
 

@@ -4,6 +4,7 @@ import GraphBrain from './components/GraphBrain';
 import HebbianAnimator from './components/HebbianAnimator';
 import PathfinderLive from './components/PathfinderLive';
 import ComparisonTool from './components/ComparisonTool';
+import ModelStatus from './components/ModelStatus';
 import './App.css';
 
 function App() {
@@ -52,6 +53,10 @@ function App() {
           Comparison Tool
         </button>
       </nav>
+
+      <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+        <ModelStatus />
+      </div>
 
       <main className="app-main">
         {activeModule === 'sparse' && <SparseBrain />}
