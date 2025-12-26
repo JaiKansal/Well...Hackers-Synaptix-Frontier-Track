@@ -94,6 +94,9 @@ class StateExtractor:
                 }
                 for node_id in top_node_ids
             ]
+            
+            # Update degree_list to only include filtered nodes
+            degree_list = [total_degrees[node_id] for node_id in top_node_ids]
         else:
             nodes = [
                 {
