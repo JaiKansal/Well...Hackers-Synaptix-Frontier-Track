@@ -358,6 +358,43 @@ async def pathfind(request: PathfindingRequest):
         board_size = board.shape[0]
         predicted_board = predictions.reshape(board_size, board_size)
         
+        # Find start and end positions
+        start_pos = None
+        end_pos = None
+        for i in range(board_size):
+            for j in range(board_size):
+                if board[i][j] == 2:
+                    start_pos = (i, j)
+                elif board[i][j] == 3:
+                    end_pos = (i, j)
+        
+        # Simple BFS pathfinding
+        solution = []
+        if start_pos and end_pos:
+            from collections import deque
+            
+            queue = deque([(start_pos, [start_pos])])
+            visited = {start_pos}
+            
+            while queue:
+                (row, col), path = queue.popleft()
+                
+                if (row, col) == end_pos:
+                    solution = [[r, c] for r, c in path]
+                    break
+                
+                # Check 4 directions
+                for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+                    new_row, new_col = row + dr, col + dc
+                    
+                    if (0 <= new_row < board_size and 
+                        0 <= new_col < board_size and
+                        (new_row, new_col) not in visited and
+                        board[new_row][new_col] != 1):  # Not a wall
+                        
+                        visited.add((new_row, new_col))
+                        queue.append(((new_row, new_col), path + [(new_row, new_col)]))
+        
         # Extract visualization data
         sparsity = StateExtractor.extract_activation_sparsity(
             states['y_activations'],
@@ -370,11 +407,12 @@ async def pathfind(request: PathfindingRequest):
         )
         
         return {
+            "solution": solution,  # Add solution path
             "input_board": board.tolist(),
             "predicted_board": predicted_board.tolist(),
             "predictions": predictions.tolist(),
             "sparsity": {
-                "y_avg": sparsity['y_avg_sparsity'],
+                "y_sparsity_mean": sparsity['y_avg_sparsity'],
                 "y_per_layer": sparsity['y_sparsity_per_layer'],
                 "x_avg": sparsity['x_avg_sparsity'],
             },
