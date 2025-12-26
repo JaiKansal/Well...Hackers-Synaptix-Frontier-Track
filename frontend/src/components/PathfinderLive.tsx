@@ -232,7 +232,11 @@ const PathfinderLive: React.FC = () => {
                 { board }
             );
 
-            setSolution(response.data.solution);
+            if (response.data.solution) {
+                setSolution(response.data.solution);
+            } else {
+                setError('No solution found for this maze');
+            }
 
             if (response.data.sparsity) {
                 setSparsity(response.data.sparsity.y_sparsity_mean * 100);
@@ -249,13 +253,15 @@ const PathfinderLive: React.FC = () => {
             }
 
             // Update grid with solution path
-            const newGrid = [...grid];
-            response.data.solution.forEach(([row, col]) => {
-                if (newGrid[row][col].type === 'empty') {
-                    newGrid[row][col].type = 'path';
-                }
-            });
-            setGrid(newGrid);
+            if (response.data.solution && Array.isArray(response.data.solution)) {
+                const newGrid = [...grid];
+                response.data.solution.forEach(([row, col]) => {
+                    if (newGrid[row] && newGrid[row][col] && newGrid[row][col].type === 'empty') {
+                        newGrid[row][col].type = 'path';
+                    }
+                });
+                setGrid(newGrid);
+            }
 
         } catch (err: any) {
             setError(err.response?.data?.detail || err.message || 'Failed to solve maze');
