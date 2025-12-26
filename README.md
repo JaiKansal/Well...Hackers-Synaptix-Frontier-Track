@@ -67,6 +67,29 @@ The Baby Dragon Hatchling is a novel neural architecture that combines:
 
 ---
 
+
+---
+
+## 🎓 Model Modes
+
+BDH Brain Explorer supports two operational modes:
+
+### 1. **Demo Mode** (Default - No GPU Required) 🎲
+- Uses **random initialization**
+- ~25% sparsity (natural ReLU sparsity)
+- Works immediately on any CPU
+- Perfect for exploring the architecture concepts
+
+### 2. **Trained Mode** (Production) 🎓
+- Uses **trained checkpoint** (from Kaggle/GPU)
+- **~5% sparsity** (learned sparse representations)
+- Demonstrates true scale-free topology
+- Requires training (see [TRAINING.md](TRAINING.md))
+
+**The application automatically detects which mode to use!**
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
