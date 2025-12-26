@@ -358,11 +358,118 @@ bdh-brain-explorer/
 
 ---
 
+## 📚 Resources & References
+
+### Official BDH Resources
+
+#### Paper & Documentation
+- **📄 Full Paper**: [The Dragon Hatchling: The Missing Link Between Transformers and the Brain](https://arxiv.org/abs/2509.26507) by Adrian Kosowski et al.
+- **🌐 HTML Version**: [arxiv.org/html/2509.26507v1](https://arxiv.org/html/2509.26507v1)
+- **🏢 Official Page**: [pathway.com/bdh](https://pathway.com/bdh)
+
+#### Key Paper Sections
+- **Section 2**: BDH architecture and local distributed graph dynamics
+- **Section 3**: BDH-GPU tensor formulation
+- **Section 6**: Interpretability findings, sparsity measurements, monosemantic synapses
+- **Section 7**: Experimental validation and scaling laws
+- **Appendix E**: Complete BDH-GPU code listing
+
+#### Main Repository
+- **🔧 Model Architecture**: [github.com/pathwaycom/bdh/blob/main/bdh.py](https://github.com/pathwaycom/bdh/blob/main/bdh.py)
+- **🎓 Training Script**: [github.com/pathwaycom/bdh/blob/main/train.py](https://github.com/pathwaycom/bdh/blob/main/train.py)
+
+### Educational Fork (Our Foundation)
+
+**[krychu/bdh](https://github.com/krychu/bdh)** - Educational fork with visualizations
+
+This project is built on krychu's excellent educational fork, which provides:
+- **Key Files**:
+  - `bdh.py` - Model implementation
+  - `boardpath.py` - Training/inference/config
+  - `utils/` - Visualization utilities
+- **Example Outputs**:
+  - `combined_board_neuron.gif` - Neuron activation patterns
+  - `combined_attention_sparsity.gif` - Attention flow visualization
+
+### Alternative Implementations
+
+- **[jploski/bdh-transformers](https://github.com/jploski/bdh-transformers)**: HuggingFace Transformers compatible wrapper
+  - Use `AutoModel`, `AutoConfig`, and `.generate()` with BDH
+  - Supports both recurrent and parallel attention modes
+
+- **[severian42/BDH-MLX](https://github.com/severian42/BDH-MLX)**: MLX port for Apple Silicon
+  - Optimized for M1/M2/M3 chips
+
+- **[mosure/burn_dragon_hatchling](https://github.com/mosure/burn_dragon_hatchling)**: Burn/Rust port
+  - High-performance Rust implementation
+
+### Community Projects
+
+- **[adamskrodzki/bdh](https://github.com/adamskrodzki/bdh)**: Dynamic vocabulary, stateful attention
+- **[Git-Faisal/bdh](https://github.com/Git-Faisal/bdh)**: Community fork
+- **[GrahLnn/bdh](https://github.com/GrahLnn/bdh)**: Experimental implementations
+- **Edge Security Prototype** by Mayank Lau: [LinkedIn post](https://www.linkedin.com/posts/mayank-lau_bdh-inspired-edge-security)
+
+### Media Coverage
+
+BDH has been featured in major tech publications:
+
+- **[Wall Street Journal](https://www.wsj.com/tech/ai/an-ai-startup-looks-toward-the-post-transformer-era)**: "An AI Startup Looks Toward the Post-Transformer Era"
+- **[Forbes](https://www.forbes.com/)**: Coverage of BDH architecture
+- **[Semafor](https://www.semafor.com/)**: AI innovation analysis
+- **[The Turing Post](https://www.turingpost.com/)**: Deep technical analysis
+- **[Quantum Zeitgeist](https://quantumzeitgeist.com/)**: Future of AI architectures
+- **[Golem](https://www.golem.de/)**: German tech coverage
+
+### Learn More
+
+#### Video Resources
+- **🎙️ [SuperDataScience Podcast](https://www.superdatascience.com/podcast/dragon-hatchling)** (72 min)
+  - "Dragon Hatchling: The Missing Link Between Transformers and the Brain"
+  - Featuring Adrian Kosowski in conversation with Jon Krohn
+  - Unpacking BDH's neuron-level architecture and sparse reasoning dynamics
+
+- **🎥 [Andrej Karpathy's "Let's build GPT"](https://www.youtube.com/watch?v=kCc8FmEb1nY)**
+  - Foundation for understanding transformer-like architectures
+  - BDH builds on similar principles
+
+#### Written Analysis
+- **📝 [Paper Review by Andrii Lukianenko](https://andlukyane.com/blog/paper-review-dragon-hatchling)**
+  - Detailed technical breakdown
+  - Key insights and implications
+
+### Community Discussion
+
+- **[Hugging Face Papers](https://huggingface.co/papers)**: Discuss the BDH paper
+- **[Alphaxiv](https://www.alphaxiv.org/)**: Academic discussion forum
+- **[EmergentMind](https://www.emergentmind.com/)**: AI research community
+
+### Visualization Inspiration
+
+- **[Colorful Vectors](https://huggingface.co/spaces/jphwang/colorful_vectors)**: Embeddings visualizer
+  - Helpful example of visualizing high-dimensional representations
+  - Intuitive, interactive design patterns
+
+### Related Resources
+
+- **[nanoGPT](https://github.com/karpathy/nanoGPT)**: BDH's implementation builds on this
+  - Minimal, educational GPT implementation
+  - Foundation for understanding transformer architectures
+
+---
+
 ## 🙏 Acknowledgments
 
-- **Original BDH Paper**: [The Dragon Hatchling](https://arxiv.org/abs/2509.26507) by Kosowski et al.
-- **Reference Implementation**: [krychu/bdh](https://github.com/krychu/bdh)
-- **Synaptix Frontier AI Hackathon**: For the amazing opportunity
+This project builds upon the work of many contributors:
+
+- **Adrian Kosowski et al.**: For the groundbreaking Dragon Hatchling paper
+- **krychu/bdh**: Educational fork with excellent visualization examples (our foundation)
+- **Pathway.com**: Original BDH implementation and research
+- **Andrej Karpathy**: nanoGPT foundation and educational resources
+- **BDH Community**: All contributors to alternative implementations and forks
+- **Synaptix Frontier AI Hackathon**: For the amazing opportunity to explore this architecture
+
+Special thanks to the entire BDH community for making this architecture accessible and fostering open research.
 
 ---
 

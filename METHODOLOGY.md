@@ -508,3 +508,108 @@ The project achieves its goal of making BDH accessible and understandable while 
 - [README.md](README.md) - Project overview
 - [REPRODUCIBILITY.md](REPRODUCIBILITY.md) - Setup guide
 - [ARCHITECTURE_NOTES.md](ARCHITECTURE_NOTES.md) - BDH deep dive
+
+---
+
+## 📚 References
+
+### Primary Sources
+
+[1] **Kosowski, A., Dudziak, Ł., Łącki, M. K., Niewiadomski, H., Olszewski, M., Piórczyński, M., Tabor, J., & Trzciński, T. (2024)**. 
+    *The Dragon Hatchling: The Missing Link Between Transformers and the Brain*. 
+    arXiv:2509.26507. 
+    https://arxiv.org/abs/2509.26507
+
+[2] **Pathway.com (2024)**. 
+    *Baby Dragon Hatchling - Official Implementation*. 
+    GitHub repository: https://github.com/pathwaycom/bdh
+
+[3] **krychu (2024)**. 
+    *BDH Educational Fork with Visualizations*. 
+    GitHub repository: https://github.com/krychu/bdh
+
+### Technical Foundations
+
+[4] **Karpathy, A. (2022)**. 
+    *nanoGPT: The simplest, fastest repository for training/finetuning medium-sized GPTs*. 
+    GitHub repository: https://github.com/karpathy/nanoGPT
+
+[5] **Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017)**. 
+    *Attention is All You Need*. 
+    In Advances in Neural Information Processing Systems 30 (NIPS 2017).
+
+### Neuroscience Foundations
+
+[6] **Hebb, D. O. (1949)**. 
+    *The Organization of Behavior: A Neuropsychological Theory*. 
+    Wiley & Sons.
+
+[7] **Barabási, A. L., & Albert, R. (1999)**. 
+    *Emergence of Scaling in Random Networks*. 
+    Science, 286(5439), 509-512.
+
+### Community Resources
+
+[8] **Lukianenko, A. (2024)**. 
+    *Paper Review: Dragon Hatchling*. 
+    https://andlukyane.com/blog/paper-review-dragon-hatchling
+
+[9] **Krohn, J., & Kosowski, A. (2024)**. 
+    *Dragon Hatchling: The Missing Link Between Transformers and the Brain*. 
+    SuperDataScience Podcast. 
+    https://www.superdatascience.com/podcast/dragon-hatchling
+
+### Alternative Implementations
+
+[10] **jploski (2024)**. 
+     *BDH-Transformers: HuggingFace Compatible Wrapper*. 
+     GitHub repository: https://github.com/jploski/bdh-transformers
+
+[11] **severian42 (2024)**. 
+     *BDH-MLX: MLX Port for Apple Silicon*. 
+     GitHub repository: https://github.com/severian42/BDH-MLX
+
+[12] **mosure (2024)**. 
+     *burn_dragon_hatchling: Burn/Rust Port*. 
+     GitHub repository: https://github.com/mosure/burn_dragon_hatchling
+
+### Visualization Tools
+
+[13] **Bostock, M., Ogievetsky, V., & Heer, J. (2011)**. 
+     *D³ Data-Driven Documents*. 
+     IEEE Transactions on Visualization and Computer Graphics, 17(12), 2301-2309.
+
+[14] **Hagberg, A., Swart, P., & S Chult, D. (2008)**. 
+     *Exploring Network Structure, Dynamics, and Function using NetworkX*. 
+     Los Alamos National Lab (LANL), Los Alamos, NM (United States).
+
+---
+
+## Citation
+
+If you use this work, please cite:
+
+```bibtex
+@software{bdh_brain_explorer_2025,
+  author = {[Your Name]},
+  title = {BDH Brain Explorer: Interactive Visualization of the Baby Dragon Hatchling Architecture},
+  year = {2025},
+  url = {https://github.com/yourusername/bdh-brain-explorer},
+  note = {Synaptix Frontier AI Hackathon Submission}
+}
+```
+
+And the original BDH paper:
+
+```bibtex
+@article{kosowski2024dragon,
+  title={The Dragon Hatchling: The Missing Link Between Transformers and the Brain},
+  author={Kosowski, Adrian and Dudziak, Łukasz and Łącki, Mateusz K and Niewiadomski, Hubert and Olszewski, Mateusz and Piórczyński, Michał and Tabor, Jacek and Trzciński, Tomasz},
+  journal={arXiv preprint arXiv:2509.26507},
+  year={2024}
+}
+```
+
+---
+
+*Last updated: December 27, 2025*
