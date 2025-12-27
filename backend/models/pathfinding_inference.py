@@ -95,24 +95,31 @@ class BDHPathfindingSolver:
                 logits = self.model(board_tensor, capture_frames=False)  # [1, T, V=100]
                 last_logits = logits[0, -1, :]  # [100]
                 
-                # Get top predictions (in case top choice is invalid)
-                top_k = 5
-                top_probs, top_indices = torch.topk(last_logits, top_k)
+                # Get all possible adjacent cells
+                curr_row, curr_col = current
+                adjacent_cells = [
+                    (curr_row - 1, curr_col),  # Up
+                    (curr_row + 1, curr_col),  # Down
+                    (curr_row, curr_col - 1),  # Left
+                    (curr_row, curr_col + 1),  # Right
+                ]
                 
-                # Try top predictions until we find a valid move
-                next_cell = None
-                for idx in top_indices:
-                    cell_idx = idx.item()
-                    row, col = cell_idx // self.board_size, cell_idx % self.board_size
-                    
-                    # Check if valid move (must be adjacent!)
-                    if self._is_valid_move(board, (row, col), visited, current):
-                        next_cell = (row, col)
-                        break
+                # Filter to valid adjacent cells
+                valid_moves = []
+                for next_pos in adjacent_cells:
+                    if self._is_valid_move(board, next_pos, visited, current):
+                        # Get model's score for this cell
+                        cell_idx = next_pos[0] * self.board_size + next_pos[1]
+                        score = last_logits[cell_idx].item()
+                        valid_moves.append((next_pos, score))
                 
-                if next_cell is None:
-                    # No valid move found
+                if not valid_moves:
+                    # No valid adjacent moves - model is stuck
                     return None
+                
+                # Pick the move with highest model score
+                valid_moves.sort(key=lambda x: x[1], reverse=True)
+                next_cell = valid_moves[0][0]
                 
                 # Move to next cell
                 path.append(next_cell)
