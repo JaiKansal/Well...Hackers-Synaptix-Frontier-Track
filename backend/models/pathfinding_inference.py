@@ -105,8 +105,8 @@ class BDHPathfindingSolver:
                     cell_idx = idx.item()
                     row, col = cell_idx // self.board_size, cell_idx % self.board_size
                     
-                    # Check if valid move
-                    if self._is_valid_move(board, (row, col), visited):
+                    # Check if valid move (must be adjacent!)
+                    if self._is_valid_move(board, (row, col), visited, current):
                         next_cell = (row, col)
                         break
                 
@@ -136,11 +136,24 @@ class BDHPathfindingSolver:
         board_state[current] = 4  # Current position
         return board_state.flatten()
     
+    def _is_adjacent(self, current: Tuple[int, int], next_pos: Tuple[int, int]) -> bool:
+        """Check if next_pos is adjacent to current (up/down/left/right only)"""
+        curr_row, curr_col = current
+        next_row, next_col = next_pos
+        
+        # Check if exactly one step away in one direction
+        row_diff = abs(next_row - curr_row)
+        col_diff = abs(next_col - curr_col)
+        
+        # Valid moves: (0,1), (1,0), (0,-1), (-1,0)
+        return (row_diff == 1 and col_diff == 0) or (row_diff == 0 and col_diff == 1)
+    
     def _is_valid_move(
         self,
         board: np.ndarray,
         pos: Tuple[int, int],
-        visited: set
+        visited: set,
+        current: Tuple[int, int]
     ) -> bool:
         """Check if move is valid"""
         row, col = pos
@@ -155,6 +168,10 @@ class BDHPathfindingSolver:
         
         # Check if already visited
         if pos in visited:
+            return False
+        
+        # CRITICAL: Check if adjacent to current position
+        if not self._is_adjacent(current, pos):
             return False
         
         return True
