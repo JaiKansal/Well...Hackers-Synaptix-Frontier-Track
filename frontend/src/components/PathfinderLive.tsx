@@ -406,11 +406,19 @@ const PathfinderLive: React.FC = () => {
                         </div>
                     )}
 
-                    {useModel && !modelAvailable && modelError && (
+                    {useModel && !modelSolution && !bfsSolution && (
+                        <div className="model-info glass-card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'var(--color-error)' }}>
+                            <h4>⚠️ No Solution</h4>
+                            <p>This maze has no valid path from start to end.</p>
+                            <p className="fallback-note">Both model and BFS confirm: maze is unsolvable</p>
+                        </div>
+                    )}
+
+                    {useModel && !modelSolution && bfsSolution && (
                         <div className="model-info glass-card">
                             <h4>ℹ️ Model Status</h4>
-                            <p>{modelError}</p>
-                            <p className="fallback-note">Using BFS algorithm as fallback</p>
+                            <p>Model exploring alternative strategies...</p>
+                            <p className="fallback-note">BFS found solution: {bfsSolution.length} steps</p>
                         </div>
                     )}
                 </div>
