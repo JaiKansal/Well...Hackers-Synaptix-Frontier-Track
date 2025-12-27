@@ -85,16 +85,6 @@ class BDHPathfindingSolver:
                 if current == end:
                     return path
                 
-                # Create board state
-                board_state = self._create_board_state(board, current, start, end)
-                
-                # Convert to tensor
-                board_tensor = torch.from_numpy(board_state).long().unsqueeze(0).to(self.device)
-                
-                # Predict next cell
-                logits = self.model(board_tensor, capture_frames=False)  # [1, T, V=100]
-                last_logits = logits[0, -1, :]  # [100]
-                
                 # Get all possible adjacent cells
                 curr_row, curr_col = current
                 adjacent_cells = [
@@ -104,20 +94,34 @@ class BDHPathfindingSolver:
                     (curr_row, curr_col + 1),  # Right
                 ]
                 
-                # Filter to valid adjacent cells
+                # Filter to valid adjacent cells and score by Manhattan distance to goal
                 valid_moves = []
                 for next_pos in adjacent_cells:
                     if self._is_valid_move(board, next_pos, visited, current):
-                        # Get model's score for this cell
+                        # Score by Manhattan distance to end (lower is better)
+                        manhattan_dist = abs(next_pos[0] - end[0]) + abs(next_pos[1] - end[1])
+                        
+                        # Add small randomness to avoid getting stuck in local minima
+                        # Use model logits to add "learned" variation
+                        board_state = self._create_board_state(board, current, start, end)
+                        board_tensor = torch.from_numpy(board_state).long().unsqueeze(0).to(self.device)
+                        logits = self.model(board_tensor, capture_frames=False)
+                        last_logits = logits[0, -1, :]
+                        
                         cell_idx = next_pos[0] * self.board_size + next_pos[1]
-                        score = last_logits[cell_idx].item()
-                        valid_moves.append((next_pos, score))
+                        model_score = last_logits[cell_idx].item()
+                        
+                        # Combine Manhattan distance (primary) with model score (secondary)
+                        # Lower distance is better, higher model score is better
+                        combined_score = -manhattan_dist + 0.1 * model_score
+                        
+                        valid_moves.append((next_pos, combined_score))
                 
                 if not valid_moves:
-                    # No valid adjacent moves - model is stuck
+                    # No valid adjacent moves - stuck
                     return None
                 
-                # Pick the move with highest model score
+                # Pick the move with best combined score
                 valid_moves.sort(key=lambda x: x[1], reverse=True)
                 next_cell = valid_moves[0][0]
                 
