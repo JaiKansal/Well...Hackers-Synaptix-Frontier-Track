@@ -38,6 +38,11 @@ const PathfinderLive: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [sparsity, setSparsity] = useState<number>(0);
     const [activeNeurons, setActiveNeurons] = useState<number>(0);
+    const [useModel, setUseModel] = useState(false);
+    const [modelSolution, setModelSolution] = useState<number[][] | null>(null);
+    const [bfsSolution, setBfsSolution] = useState<number[][] | null>(null);
+    const [modelAvailable, setModelAvailable] = useState(false);
+    const [modelError, setModelError] = useState<string | null>(null);
 
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -227,15 +232,29 @@ const PathfinderLive: React.FC = () => {
                 })
             );
 
-            const response = await axios.post<PathfinderResponse>(
-                `${API_URL}/api/pathfind`,
+            // Use model endpoint if toggle is on
+            const endpoint = useModel ? '/api/pathfind-model' : '/api/pathfind';
+            const response = await axios.post<any>(
+                `${API_URL}${endpoint}`,
                 { board }
             );
 
-            if (response.data.solution) {
-                setSolution(response.data.solution);
+            if (useModel) {
+                // Model-based response
+                setModelAvailable(response.data.model_available);
+                setModelError(response.data.model_error);
+                setModelSolution(response.data.model_solution);
+                setBfsSolution(response.data.bfs_solution);
+
+                // Show model solution if available, otherwise BFS
+                setSolution(response.data.model_solution || response.data.bfs_solution);
             } else {
-                setError('No solution found for this maze');
+                // BFS-only response
+                if (response.data.solution) {
+                    setSolution(response.data.solution);
+                } else {
+                    setError('No solution found for this maze');
+                }
             }
 
             if (response.data.sparsity) {
@@ -304,6 +323,19 @@ const PathfinderLive: React.FC = () => {
                             <button className="btn btn-secondary" onClick={handleRandomMaze}>
                                 🎲 Random Maze
                             </button>
+                        </div>
+
+                        <div className="control-group">
+                            <label className="toggle-label">
+                                <input
+                                    type="checkbox"
+                                    checked={useModel}
+                                    onChange={(e) => setUseModel(e.target.checked)}
+                                />
+                                <span className="toggle-text">
+                                    {useModel ? '🎓 Use Trained Model' : '🧮 Use BFS Algorithm'}
+                                </span>
+                            </label>
                             <button
                                 className="btn btn-primary"
                                 onClick={handleSolve}
@@ -349,6 +381,36 @@ const PathfinderLive: React.FC = () => {
                     {error && (
                         <div className="error-message">
                             ⚠️ {error}
+                        </div>
+                    )}
+
+                    {useModel && modelSolution && bfsSolution && (
+                        <div className="comparison-display glass-card">
+                            <h4>🔬 Model vs BFS Comparison</h4>
+                            <div className="comparison-grid">
+                                <div className="comparison-item">
+                                    <span className="comparison-label">Model Steps:</span>
+                                    <span className="comparison-value">{modelSolution.length}</span>
+                                </div>
+                                <div className="comparison-item">
+                                    <span className="comparison-label">BFS Steps:</span>
+                                    <span className="comparison-value">{bfsSolution.length}</span>
+                                </div>
+                                <div className="comparison-item">
+                                    <span className="comparison-label">Match:</span>
+                                    <span className={`comparison-value ${modelSolution.length === bfsSolution.length ? 'match' : 'mismatch'}`}>
+                                        {modelSolution.length === bfsSolution.length ? '✅ Perfect!' : '⚠️ Different'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {useModel && !modelAvailable && modelError && (
+                        <div className="model-info glass-card">
+                            <h4>ℹ️ Model Status</h4>
+                            <p>{modelError}</p>
+                            <p className="fallback-note">Using BFS algorithm as fallback</p>
                         </div>
                     )}
                 </div>

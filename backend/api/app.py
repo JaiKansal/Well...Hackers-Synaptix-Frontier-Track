@@ -488,6 +488,138 @@ async def pathfind(request: PathfindingRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/api/pathfind-model")
+async def pathfind_with_model(request: PathfindingRequest):
+    """
+    Solve pathfinding using trained BDH model
+    
+    Uses the trained pathfinding model if available, otherwise falls back to BFS.
+    Returns both model solution and BFS solution for comparison.
+    """
+    try:
+        # Get board and positions
+        board = np.array(request.board)
+        board_size = board.shape[0]
+        
+        # Find start and end positions
+        start_pos = None
+        end_pos = None
+        for i in range(board_size):
+            for j in range(board_size):
+                if board[i][j] == 2:
+                    start_pos = (i, j)
+                elif board[i][j] == 3:
+                    end_pos = (i, j)
+        
+        if not start_pos or not end_pos:
+            raise HTTPException(status_code=400, detail="Board must have start (2) and end (3) positions")
+        
+        # BFS solution (always compute as fallback/comparison)
+        from collections import deque
+        
+        queue = deque([(start_pos, [start_pos])])
+        visited = {start_pos}
+        bfs_solution = []
+        
+        while queue:
+            (row, col), path = queue.popleft()
+            
+            if (row, col) == end_pos:
+                bfs_solution = [[r, c] for r, c in path]
+                break
+            
+            for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+                new_row, new_col = row + dr, col + dc
+                
+                if (0 <= new_row < board_size and 
+                    0 <= new_col < board_size and
+                    (new_row, new_col) not in visited and
+                    board[new_row][new_col] != 1):
+                    
+                    visited.add((new_row, new_col))
+                    queue.append(((new_row, new_col), path + [(new_row, new_col)]))
+        
+        # Try model-based solution
+        model_solution = None
+        model_available = False
+        model_error = None
+        
+        try:
+            # Check if pathfinding model checkpoint exists
+            checkpoint_path = Path(__file__).parent / '../../checkpoints/bdh_pathfinding_trained.pth'
+            
+            if checkpoint_path.exists():
+                # Import solver
+                import sys
+                sys.path.append(str(Path(__file__).parent / '../models'))
+                from pathfinding_inference import BDHPathfindingSolver
+                
+                # Create solver
+                device = 'cuda' if torch.cuda.is_available() else ('mps' if torch.backends.mps.is_available() else 'cpu')
+                solver = BDHPathfindingSolver(str(checkpoint_path), device=device)
+                
+                # Solve
+                path = solver.solve(board, start_pos, end_pos, max_steps=100)
+                
+                if path:
+                    model_solution = [[r, c] for r, c in path]
+                    model_available = True
+                else:
+                    model_error = "Model could not find a solution"
+            else:
+                model_error = "Trained model checkpoint not found"
+                
+        except Exception as e:
+            model_error = f"Model inference failed: {str(e)}"
+        
+        # Get model and run visualization
+        model, device, _ = load_model()
+        board_flat = board.flatten()
+        input_tokens = torch.tensor([board_flat], dtype=torch.long).to(device)
+        
+        model.enable_tracking()
+        with torch.no_grad():
+            logits, output_frames, x_frames, y_frames, attn_frames, logits_frames = \
+                model(input_tokens, capture_frames=True)
+        
+        states = model.get_states()
+        
+        # Extract visualization data
+        sparsity = StateExtractor.extract_activation_sparsity(
+            states['y_activations'],
+            states['x_activations']
+        )
+        
+        attention_flow = StateExtractor.extract_attention_flow(
+            states['attention_weights'],
+            top_k=30
+        )
+        
+        return {
+            "model_available": model_available,
+            "model_solution": model_solution,
+            "model_error": model_error,
+            "bfs_solution": bfs_solution,
+            "solutions_match": model_solution == bfs_solution if model_solution else False,
+            "model_steps": len(model_solution) if model_solution else None,
+            "bfs_steps": len(bfs_solution),
+            "input_board": board.tolist(),
+            "sparsity": {
+                "y_sparsity_mean": sparsity['y_avg_sparsity'],
+                "y_per_layer": sparsity['y_sparsity_per_layer'],
+                "x_avg": sparsity['x_avg_sparsity'],
+            },
+            "attention_flow": {
+                "edges_per_layer": attention_flow['attention_edges_per_layer'],
+                "avg_per_layer": attention_flow['avg_attention_per_layer'],
+            },
+            "states": convert_numpy_to_python(states)
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/api/config")
 async def get_config():
     """Get model configuration"""
