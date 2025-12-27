@@ -384,7 +384,7 @@ const PathfinderLive: React.FC = () => {
                         </div>
                     )}
 
-                    {useModel && modelSolution && bfsSolution && (
+                    {useModel && modelSolution && modelSolution.length > 0 && bfsSolution && bfsSolution.length > 0 && (
                         <div className="comparison-display glass-card">
                             <h4>🔬 Model vs BFS Comparison</h4>
                             <div className="comparison-grid">
@@ -406,7 +406,7 @@ const PathfinderLive: React.FC = () => {
                         </div>
                     )}
 
-                    {useModel && !modelSolution && !bfsSolution && (
+                    {useModel && (!modelSolution || modelSolution.length === 0) && (!bfsSolution || bfsSolution.length === 0) && (
                         <div className="model-info glass-card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'var(--color-error)' }}>
                             <h4>⚠️ No Solution</h4>
                             <p>This maze has no valid path from start to end.</p>
@@ -414,7 +414,7 @@ const PathfinderLive: React.FC = () => {
                         </div>
                     )}
 
-                    {useModel && !modelSolution && bfsSolution && (
+                    {useModel && (!modelSolution || modelSolution.length === 0) && bfsSolution && bfsSolution.length > 0 && (
                         <div className="model-info glass-card">
                             <h4>ℹ️ Model Status</h4>
                             <p>Model exploring alternative strategies...</p>
