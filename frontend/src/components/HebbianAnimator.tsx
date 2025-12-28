@@ -285,10 +285,10 @@ const HebbianAnimator: React.FC<HebbianAnimatorProps> = ({
                             <input
                                 type="range"
                                 min="100"
-                                max="1000"
+                                max="10000"
                                 step="100"
-                                value={playbackSpeed}
-                                onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
+                                value={10100 - playbackSpeed}  // Invert: left=10000ms(0.1x), right=100ms(10x)
+                                onChange={(e) => setPlaybackSpeed(10100 - Number(e.target.value))}
                                 className="slider"
                             />
                             <span>{(1000 / playbackSpeed).toFixed(1)}x</span>

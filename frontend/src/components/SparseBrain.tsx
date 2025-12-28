@@ -2,7 +2,7 @@
  * Sparse Brain Component
  * 
  * Visualizes BDH's sparse activations vs Transformer's dense activations
- * Side-by-side heatmap comparison showing ~5% vs ~95% activation
+ * Side-by-side heatmap comparison showing ~25% vs ~95% activation
  */
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -75,7 +75,7 @@ const SparseBrain: React.FC<SparseBrainProps> = ({
             .attr('y', 30)
             .attr('text-anchor', 'middle')
             .attr('class', 'heatmap-title')
-            .text('BDH (Sparse ~5%)');
+            .text('BDH (Sparse ~25%)');
 
         // Heatmap cells
         bdhGroup.selectAll('rect')
@@ -171,7 +171,7 @@ const SparseBrain: React.FC<SparseBrainProps> = ({
             <div className="sparse-brain-header">
                 <h2>Sparse Brain: Activation Comparison</h2>
                 <p className="text-muted">
-                    BDH achieves Transformer-like performance with only ~5% neuron activation
+                    BDH achieves 3.9x efficiency with ~25% activation vs Transformer's ~95%
                 </p>
             </div>
 
@@ -253,8 +253,8 @@ const SparseBrain: React.FC<SparseBrainProps> = ({
                             </li>
                             <li>
                                 <strong>Efficiency Potential:</strong> Even at {sparsityPercent}% sparsity, we see significant
-                                memory savings. A trained model with ~5% sparsity would be ~19x more efficient than
-                                Transformers in terms of active neurons.
+                                memory savings. Even this untrained model shows 3.9x fewer active neurons than
+                                Transformers. With specialized training, BDH can reach 3-5% sparsity for even greater gains.
                             </li>
                             <li>
                                 <strong>Interpretability:</strong> Sparse activations make it easier to identify which neurons

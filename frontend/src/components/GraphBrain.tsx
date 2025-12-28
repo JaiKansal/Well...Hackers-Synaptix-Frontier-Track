@@ -16,7 +16,7 @@ interface GraphBrainProps {
 }
 
 const GraphBrain: React.FC<GraphBrainProps> = ({
-    threshold = 0.05,
+    threshold = 0.01,  // Optimized for trained model (gives ~16k edges)
     topKNodes = 100
 }) => {
     const svgRef = useRef<SVGSVGElement>(null);
@@ -52,20 +52,22 @@ const GraphBrain: React.FC<GraphBrainProps> = ({
             .domain([0, maxDegree])
             .range([4, 20]);
 
-        // Create force simulation
+
+        // Create force simulation with improved spacing
         const simulation = d3.forceSimulation(nodes as any)
             .force('link', d3.forceLink(links as any)
                 .id((d: any) => d.id)
-                .distance(50)
-                .strength(0.5))
+                .distance(100)  // Increased from 50 to spread nodes apart
+                .strength(0.3))  // Reduced from 0.5 to make links more flexible
             .force('charge', d3.forceManyBody()
-                .strength(-100))
+                .strength(-300))  // Increased repulsion from -100 to -300
             .force('center', d3.forceCenter(
                 (width - margin.left - margin.right) / 2,
                 (height - margin.top - margin.bottom) / 2
             ))
             .force('collision', d3.forceCollide()
-                .radius((d: any) => sizeScale(d.degree) + 2));
+                .radius((d: any) => sizeScale(d.degree) + 15))  // Increased padding from 2 to 15
+            .alphaDecay(0.02);  // Slower cooling for better settling
 
         // Create links
         const link = g.append('g')
@@ -136,18 +138,37 @@ const GraphBrain: React.FC<GraphBrainProps> = ({
                     d.fy = null;
                 }));
 
-        // Add labels for hub nodes
-        const label = g.append('g')
-            .selectAll('text')
+
+        // Add labels for hub nodes with backgrounds
+        const labelGroup = g.append('g')
+            .selectAll('g')
             .data(nodes.filter((n: any) => n.is_hub))
-            .join('text')
+            .join('g')
+            .attr('class', 'hub-label-group');
+
+        // Add background rectangles for labels
+        labelGroup.append('rect')
+            .attr('class', 'label-bg')
+            .attr('x', -25)
+            .attr('y', -28)
+            .attr('width', 50)
+            .attr('height', 14)
+            .attr('rx', 3)
+            .attr('fill', 'rgba(15, 23, 42, 0.9)')
+            .attr('stroke', '#f59e0b')
+            .attr('stroke-width', 1);
+
+        // Add text labels
+        labelGroup.append('text')
             .attr('class', 'node-label')
             .attr('text-anchor', 'middle')
-            .attr('dy', -15)
+            .attr('dy', -17)
             .attr('fill', '#f59e0b')
-            .attr('font-size', '10px')
+            .attr('font-size', '9px')
             .attr('font-weight', 'bold')
             .text((d: any) => `Hub ${d.id}`);
+
+
 
         // Update positions on tick
         simulation.on('tick', () => {
@@ -161,9 +182,9 @@ const GraphBrain: React.FC<GraphBrainProps> = ({
                 .attr('cx', (d: any) => d.x)
                 .attr('cy', (d: any) => d.y);
 
-            label
-                .attr('x', (d: any) => d.x)
-                .attr('y', (d: any) => d.y);
+            // Move entire label group (background + text together)
+            labelGroup
+                .attr('transform', (d: any) => `translate(${d.x},${d.y})`);
         });
 
         // Add zoom behavior
@@ -192,13 +213,24 @@ const GraphBrain: React.FC<GraphBrainProps> = ({
         const height = 200;
         const margin = { top: 20, right: 20, bottom: 40, left: 50 };
 
+        // Get degree distribution from metrics
         const degrees = data.metrics.degree_distribution;
 
-        // Validate degrees is an array
+        // Validate degrees is an array with data
         if (!degrees || !Array.isArray(degrees) || degrees.length === 0) {
-            console.warn('Invalid degree distribution data');
+            console.warn('Invalid or empty degree distribution data:', degrees);
+            // Show message in chart area
+            chartSvg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#94a3b8')
+                .attr('font-size', '14px')
+                .text('No degree distribution data available');
             return;
         }
+
+        console.log('Degree distribution:', degrees.slice(0, 10), '... (showing first 10)');
 
         // Create histogram bins
         const maxDegree = d3.max(degrees) || 100;

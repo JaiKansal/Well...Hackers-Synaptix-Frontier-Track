@@ -68,6 +68,8 @@ export interface TopologyMetrics {
     max_degree: number;
     min_degree: number;
     std_degree: number;
+    modularity: number;
+    num_communities: number;
     hub_threshold: number;
     num_hubs: number;
     hub_indices: number[];

@@ -53,20 +53,30 @@
 }
 
 .degree-chart-container {
-    max-width: 500px;
-    margin: 0 auto 2rem;
-    padding: 1.5rem;
+    max-width: 600px;
+    margin: 3rem auto 3rem;
+    /* Increased spacing */
+    padding: 2rem;
+    /* Increased padding */
     text-align: center;
+    border-top: 2px solid rgba(99, 102, 241, 0.2);
+    /* Visual separator */
+    border-bottom: 2px solid rgba(99, 102, 241, 0.2);
 }
 
 .degree-chart-container h3 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
     color: var(--color-primary-light);
+}
+
+.degree-chart-container p {
+    margin-bottom: 1.5rem;
 }
 
 #degree-chart {
     display: block;
-    margin: 1rem auto;
+    margin: 1.5rem auto;
 }
 
 .node-details {
@@ -112,6 +122,17 @@
     color: var(--color-warning);
 }
 
+/* GraphBrain specific spacing */
+.graph-brain-container .metrics-grid {
+    margin: 3rem 0;
+    /* Add vertical spacing */
+}
+
+.graph-brain-container .insights {
+    margin-top: 3rem;
+    /* Add spacing above insights */
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -138,5 +159,10 @@
 
     .node-stats {
         grid-template-columns: 1fr;
+    }
+
+    .degree-chart-container {
+        margin: 2rem auto;
+        padding: 1.5rem;
     }
 }

@@ -1,0 +1,378 @@
+.resources-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.resources-content {
+    padding: 3rem;
+    margin-bottom: 2rem;
+}
+
+.resources-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.resources-intro {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.resource-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.resource-section:last-child {
+    border-bottom: none;
+}
+
+.resource-section h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #e2e8f0;
+}
+
+.resource-item {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(30, 41, 59, 0.4);
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: all 0.3s ease;
+}
+
+.resource-item:hover {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(148, 163, 184, 0.2);
+    transform: translateY(-2px);
+}
+
+.resource-item h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.resource-item h4 a {
+    color: #818cf8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.resource-item h4 a:hover {
+    color: #a5b4fc;
+    text-decoration: underline;
+}
+
+.resource-authors {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.resource-usage {
+    margin: 1rem 0;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.resource-usage strong {
+    color: #e2e8f0;
+}
+
+.resource-item ul {
+    margin: 1rem 0 0 1.5rem;
+    color: #94a3b8;
+}
+
+.resource-item li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.resource-item code {
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #a5b4fc;
+    font-size: 0.9rem;
+}
+
+.alt-implementations {
+    list-style: none;
+    padding: 0;
+}
+
+.alt-implementations li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.alt-implementations li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #818cf8;
+}
+
+.alt-implementations a {
+    color: #818cf8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.alt-implementations a:hover {
+    color: #a5b4fc;
+    text-decoration: underline;
+}
+
+.media-list {
+    list-style: none;
+    padding: 0;
+}
+
+.media-list li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.media-list li::before {
+    content: "📰";
+    position: absolute;
+    left: 0;
+}
+
+.media-list a {
+    color: #818cf8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.media-list a:hover {
+    color: #a5b4fc;
+    text-decoration: underline;
+}
+
+.acknowledgments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.acknowledgments li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #cbd5e1;
+}
+
+.acknowledgments li::before {
+    content: "✨";
+    position: absolute;
+    left: 0;
+}
+
+.acknowledgments strong {
+    color: #e2e8f0;
+}
+
+.citation {
+    background: rgba(99, 102, 241, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.citation-box {
+    margin-top: 1rem;
+}
+
+.citation-box pre {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.resources-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    text-align: center;
+}
+
+.resources-footer p {
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.text-muted {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* Trained Model Highlight */
+.trained-model-highlight {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    padding: 2rem !important;
+}
+
+.trained-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.badge-icon {
+    font-size: 2.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.trained-badge h3 {
+    margin: 0;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.highlight-text {
+    font-size: 1.15rem;
+    color: #e2e8f0;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.trained-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.stat-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.6);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.stat-note {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.training-details,
+.training-impact,
+.training-docs {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(30, 41, 59, 0.4);
+    border-radius: 12px;
+    border-left: 4px solid #6366f1;
+}
+
+.training-details h4,
+.training-impact h4,
+.training-docs h4 {
+    color: #a5b4fc;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.training-details ul,
+.training-docs ul {
+    margin: 0.5rem 0 0 1.5rem;
+    color: #cbd5e1;
+}
+
+.training-details li,
+.training-docs li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.training-impact p {
+    color: #cbd5e1;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.training-impact p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .resources-content {
+        padding: 2rem 1.5rem;
+    }
+
+    .resources-title {
+        font-size: 2rem;
+    }
+
+    .resource-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .resource-item {
+        padding: 1rem;
+    }
+}

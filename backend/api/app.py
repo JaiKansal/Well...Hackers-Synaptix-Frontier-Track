@@ -89,9 +89,13 @@ class TopologyMetrics(BaseModel):
     max_degree: int
     min_degree: int
     std_degree: float
+    modularity: float
+    num_communities: int
     hub_threshold: float
     num_hubs: int
     hub_indices: List[int]
+    degree_distribution: List[int]
+
 
 
 class InferenceResponse(BaseModel):
@@ -329,9 +333,12 @@ async def infer(request: InferenceRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Topology cache
+TOPOLOGY_CACHE = {}
+
 @app.get("/api/topology")
 async def get_topology(
-    threshold: float = 0.1,
+    threshold: float = 0.01,  # Lowered from 0.1 to work with trained model
     top_k_nodes: Optional[int] = None
 ):
     """
@@ -345,6 +352,14 @@ async def get_topology(
         Graph topology with nodes, edges, and metrics
     """
     try:
+        # Check cache
+        cache_key = f"{threshold}_{top_k_nodes}"
+        if cache_key in TOPOLOGY_CACHE:
+            print(f"✓ Using cached topology for threshold={threshold}, top_k={top_k_nodes}")
+            return TOPOLOGY_CACHE[cache_key]
+        
+        print(f"Computing topology for threshold={threshold}, top_k={top_k_nodes}...")
+        
         model, device, _ = load_model()
         
         # Extract Gx topology
@@ -364,10 +379,15 @@ async def get_topology(
             metrics=TopologyMetrics(**topology['metrics'])
         )
         
+        # Cache the result
+        TOPOLOGY_CACHE[cache_key] = response
+        print(f"✓ Topology computed and cached ({len(topology['nodes'])} nodes, {len(topology['edges'])} edges)")
+        
         return response
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @app.post("/api/sparsity")

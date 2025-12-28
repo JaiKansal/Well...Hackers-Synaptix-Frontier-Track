@@ -4,11 +4,12 @@ import GraphBrain from './components/GraphBrain';
 import HebbianAnimator from './components/HebbianAnimator';
 import PathfinderLive from './components/PathfinderLive';
 import ComparisonTool from './components/ComparisonTool';
+import Resources from './components/Resources';
 import ModelStatus from './components/ModelStatus';
 import './App.css';
 
 function App() {
-  const [activeModule, setActiveModule] = useState<'sparse' | 'graph' | 'hebbian' | 'pathfinder' | 'compare'>('sparse');
+  const [activeModule, setActiveModule] = useState<'sparse' | 'graph' | 'hebbian' | 'pathfinder' | 'compare' | 'resources'>('sparse');
 
   return (
     <div className="app">
@@ -52,6 +53,12 @@ function App() {
         >
           Comparison Tool
         </button>
+        <button
+          className={`nav-btn ${activeModule === 'resources' ? 'active' : ''}`}
+          onClick={() => setActiveModule('resources')}
+        >
+          📚 Resources
+        </button>
       </nav>
 
       <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
@@ -64,16 +71,33 @@ function App() {
         {activeModule === 'hebbian' && <HebbianAnimator />}
         {activeModule === 'pathfinder' && <PathfinderLive />}
         {activeModule === 'compare' && <ComparisonTool />}
+        {activeModule === 'resources' && <Resources />}
       </main>
 
       <footer className="app-footer">
         <p>
-          Built for Synaptix Frontier AI Hackathon | Track 2
+          Built for <strong>Synaptix Frontier AI Hackathon</strong> | Track 2: Visualization & Education
         </p>
         <p className="text-muted">
-          Based on <a href="https://arxiv.org/abs/2509.26507" target="_blank" rel="noopener noreferrer">
+          Based on{' '}
+          <a href="https://arxiv.org/abs/2509.26507" target="_blank" rel="noopener noreferrer">
             The Dragon Hatchling
-          </a> by Kosowski et al.
+          </a>{' '}
+          by Kosowski et al. | Built on{' '}
+          <a href="https://github.com/krychu/bdh" target="_blank" rel="noopener noreferrer">
+            krychu/bdh
+          </a>{' '}
+          educational fork
+        </p>
+        <p className="text-muted" style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
+          Open Source | MIT License | See{' '}
+          <span
+            onClick={() => setActiveModule('resources')}
+            style={{ color: '#818cf8', cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            Resources
+          </span>{' '}
+          for full citations
         </p>
       </footer>
     </div>
