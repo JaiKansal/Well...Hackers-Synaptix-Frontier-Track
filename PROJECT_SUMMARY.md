@@ -129,9 +129,8 @@ We're not claiming to have solved interpretability. But we've built a tool that 
 
 ---
 
-**Repository**: [GitHub Link]  
-**Live Demo**: [Deployment Link]  
+**Repository**: [\[GitHub Link\]](https://github.com/JaiKansal/Well...Hackers-Synaptix-Frontier-Track)   
 **Documentation**: See README.md and module-specific guides
 
 **Built with**: Python, FastAPI, React, TypeScript, D3.js, PyTorch  
-**BDH Implementation**: Based on the original paper by [Authors]
+**BDH Implementation**: Based on the reference implementation by [Krzysztof Opaliński (krychu)](https://github.com/krychu/bdh)
