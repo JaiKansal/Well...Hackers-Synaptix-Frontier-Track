@@ -379,6 +379,30 @@ bdh-brain-explorer/
 
 ---
 
+---
+
+## 📖 Documentation Map
+
+We provide comprehensive documentation covering every aspect of the system:
+
+### 🏛️ Project Overview
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: 2.5-page executive summary for judges (Problem, Solution, Architecture).
+- **[METHODOLOGY.md](METHODOLOGY.md)**: Deep dive into how we built the dual-mode system and state extraction.
+- **[DUAL_MODE_SUMMARY.md](DUAL_MODE_SUMMARY.md)**: Explanation of Random vs. Trained modes.
+
+### 🔬 Module-Specific Guides
+Detailed guides for each visualization module can be found in `docs/modules/`:
+- **[Sparse Brain Guide](docs/modules/SPARSE_BRAIN.md)**: Understanding the heatmap and 3.9x efficiency.
+- **[Graph Brain Guide](docs/modules/GRAPH_BRAIN.md)**: Interpreting topology, hubs, and connections.
+- **[Hebbian Learning Guide](docs/modules/HEBBIAN_LEARNING.md)**: How the animation works and what to look for.
+- **[Comparison Tool Guide](docs/modules/COMPARISON_TOOL.md)**: Benchmarking BDH vs. Transformers.
+
+### 🧠 Core Algorithms
+- **[HYBRID_PATHFINDING.md](HYBRID_PATHFINDING.md)**: Technical breakdown of our BFS + Model pathfinding engine.
+- **[TRAINING.md](TRAINING.md)**: Guide on how the models were trained (reproducibility).
+
+---
+
 ## 📚 Resources & References
 
 ### Official BDH Resources

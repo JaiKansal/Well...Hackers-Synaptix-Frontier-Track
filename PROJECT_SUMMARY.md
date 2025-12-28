@@ -130,7 +130,7 @@ We're not claiming to have solved interpretability. But we've built a tool that 
 ---
 
 **Repository**: [\[GitHub Link\]](https://github.com/JaiKansal/Well...Hackers-Synaptix-Frontier-Track)   
-**Documentation**: See README.md and module-specific guides
+**Documentation**: See README.md and module-specific guides in `docs/modules/`
 
 **Built with**: Python, FastAPI, React, TypeScript, D3.js, PyTorch  
 **BDH Implementation**: Based on the reference implementation by [Krzysztof Opaliński (krychu)](https://github.com/krychu/bdh)
