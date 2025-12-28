@@ -1,6 +1,59 @@
+# Python
 venv/
-node_modules/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+.vite/
+dist/
+.cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Model checkpoints (keep only trained ones)
 *.pt
+!checkpoints/bdh_trained.pth
+!checkpoints/bdh_pathfinding_trained.pth
+
+# Large files
 *.gif
+*.mp4
+*.avi
+
+# Reference implementation (external dependency)
+reference-bdh/
+
+# Test outputs
+backend/test_outputs/
+test_outputs/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
