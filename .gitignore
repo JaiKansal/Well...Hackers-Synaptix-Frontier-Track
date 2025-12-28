@@ -33,8 +33,9 @@ Thumbs.db
 !checkpoints/bdh_trained.pth
 !checkpoints/bdh_pathfinding_trained.pth
 
-# Large files
+# Large files (except documentation)
 *.gif
+!docs/screenshots/*.gif
 *.mp4
 *.avi
 

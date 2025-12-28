@@ -248,7 +248,7 @@ curl -X POST "http://localhost:8000/api/infer" \
 *Interactive force-directed graph showing scale-free topology with hub neurons*
 
 ### Hebbian Animator Module
-![Hebbian Animator](docs/screenshots/hebbian-animator.png)
+![Hebbian Animator](docs/screenshots/hebbian-animator.gif)
 *Animated visualization of synapse strengthening through Hebbian learning*
 
 ---
