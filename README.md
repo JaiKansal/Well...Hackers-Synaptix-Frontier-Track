@@ -81,10 +81,10 @@ BDH Brain Explorer supports two operational modes:
 - Perfect for exploring the architecture concepts
 
 ### 2. **Trained Mode** (Production) 🎓
-- Uses **trained checkpoint** (from Kaggle/GPU)
-- **~5% sparsity** (learned sparse representations)
-- Demonstrates true scale-free topology
-- Requires training (see [TRAINING.md](TRAINING.md))
+- Uses **trained checkpoint** ✅ **INCLUDED IN REPO**
+- **~25% sparsity** (measured on actual inference)
+- Demonstrates learned representations
+- **Ready to use immediately** - no training needed!
 
 **The application automatically detects which mode to use!**
 
@@ -102,23 +102,19 @@ BDH Brain Explorer supports two operational modes:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/bdh-brain-explorer.git
-cd bdh-brain-explorer
+git clone https://github.com/JaiKansal/Well...Hackers-Synaptix-Frontier-Track.git
+cd Well...Hackers-Synaptix-Frontier-Track
 ```
 
-2. **Set up Python environment**
+2. **Set up BDH reference implementation**
 ```bash
+# Clone BDH reference (required dependency)
+git clone https://github.com/krychu/bdh.git reference-bdh
 cd reference-bdh
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install torch numpy matplotlib networkx pillow
+pip install torch numpy matplotlib networkx pillow fastapi uvicorn pydantic
 cd ..
-```
-
-3. **Install backend dependencies**
-```bash
-source reference-bdh/venv/bin/activate
-pip install fastapi uvicorn pydantic
 ```
 
 4. **Install frontend dependencies**
@@ -132,15 +128,17 @@ cd ..
 
 **Terminal 1 - Backend:**
 ```bash
-cd bdh-brain-explorer
+cd Well...Hackers-Synaptix-Frontier-Track
 source reference-bdh/venv/bin/activate
 cd backend/api
 python app.py
 ```
 
+✅ **Trained checkpoints will load automatically!**
+
 **Terminal 2 - Frontend:**
 ```bash
-cd bdh-brain-explorer/frontend
+cd Well...Hackers-Synaptix-Frontier-Track/frontend
 npm run dev
 ```
 
