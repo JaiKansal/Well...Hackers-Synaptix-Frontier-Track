@@ -515,9 +515,15 @@ This is a hackathon submission project, but feedback and suggestions are welcome
 
 ## 📧 Contact
 
-**Author**: [Your Name]
-**Email**: [your.email@example.com]
-**GitHub**: [@yourusername](https://github.com/yourusername)
+**Team Synaptix IITM**
+
+- **Jai Kansal**  
+  📧 jaikansal85@gmail.com  
+  🐙 [@JaiKansal](https://github.com/JaiKansal)
+
+- **Manya Goel**  
+  📧 goyalmanya67@gmail.com  
+  🐙 [@Manya-Goel132](https://github.com/Manya-Goel132)
 
 ---
 
